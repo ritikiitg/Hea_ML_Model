@@ -35,7 +35,7 @@ def run_assessment(request: AssessmentRequest, db: Session = Depends(get_db)):
         .limit(request.include_history_days)
         .all()
     )
-
+    # coded by ritik raj
     if not recent_inputs:
         raise HTTPException(status_code=400, detail="No health inputs found. Submit daily logs first.")
 

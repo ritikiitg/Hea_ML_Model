@@ -1,6 +1,6 @@
 """
 Feedback model — stores user confirmation/rejection of detected health signals.
-Used for adaptive model improvement.
+Used for adaptive model improvement. 
 """
 
 import uuid
