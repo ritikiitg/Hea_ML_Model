@@ -46,7 +46,7 @@ def export_user_data(user_id: str, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-
+# coded by ritik raj
 @router.delete("/{user_id}", response_model=APIResponse)
 def delete_user_data(user_id: str, confirm: bool = False, db: Session = Depends(get_db)):
     """Delete all user data (GDPR right to erasure). Requires confirmation."""

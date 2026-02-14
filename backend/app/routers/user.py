@@ -42,7 +42,7 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
-
+# coded by ritik raj
 
 @router.put("/{user_id}/complete-onboarding", response_model=APIResponse)
 def complete_onboarding(user_id: str, db: Session = Depends(get_db)):
