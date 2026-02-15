@@ -84,6 +84,7 @@ packer_cache/
 .DS_Store
 Thumbs.db
 
+
 # Project Specific
 backend/lambda.zip
 backend/package/
@@ -91,3 +92,13 @@ ml/training/data/*.json
 ml/training/data/*.csv
 ml/trained_models/
 !ml/trained_models/.gitkeep
+
+# Large Data & Results
+data/
+ml/hea_results/
+
+# Video Files
+*.mp4
+*.webm
+*.avi
+*.mov

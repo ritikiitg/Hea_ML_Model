@@ -1,6 +1,7 @@
 """
 Hea ML Explainability Module
-Attention scoring + rule-based signal aggregation for human-readable explanations.
+Attention scoring + rule-based signal aggregation + SHAP-based feature importance
+for human-readable explanations.
 """
 
 import logging
@@ -175,3 +176,50 @@ class ExplainabilityEngine:
             return "Our confidence is limited. Continue logging daily to help us build a clearer picture."
         else:
             return "This is a preliminary assessment. We need more data to provide more reliable insights."
+
+    @classmethod
+    def explain_with_shap(cls, risk_factors: list[dict], risk_level: str,
+                          confidence_score: float) -> dict:
+        """
+        Generate explanation from SHAP-based risk factors (from prediction_service).
+
+        Args:
+            risk_factors: List from HealthRiskPredictor._explain() with
+                          feature, label, shap_value, direction, value, importance.
+            risk_level: Predicted risk level (LOW/WEAK/MODERATE/HIGH).
+            confidence_score: Model confidence.
+
+        Returns:
+            dict with summary, shap_explanations, next_steps, disclaimer.
+        """
+        summary = cls._generate_summary(risk_level, confidence_score)
+
+        # Convert SHAP factors to human-readable explanations
+        shap_explanations = []
+        for factor in risk_factors[:8]:
+            icon = "⬆️" if factor.get("direction") == "increases risk" else "⬇️"
+            shap_explanations.append({
+                "source": "Longitudinal health model",
+                "finding": f"{factor['label']}: {factor.get('direction', 'relevant')}",
+                "feature": factor["feature"],
+                "value": factor.get("value"),
+                "importance": (
+                    "high" if factor.get("importance", 0) > 0.1
+                    else "moderate" if factor.get("importance", 0) > 0.05
+                    else "low"
+                ),
+                "icon": icon,
+            })
+
+        return {
+            "summary": summary,
+            "confidence_note": cls._confidence_note(confidence_score),
+            "signal_explanations": shap_explanations,
+            "next_steps": cls.NEXT_STEPS.get(risk_level, cls.NEXT_STEPS["LOW"]),
+            "model_type": "ensemble_lgbm_xgb_shap",
+            "disclaimer": (
+                "Hea is a wellness monitoring tool and does not provide medical diagnosis, "
+                "advice, or treatment. Always consult a qualified healthcare professional "
+                "for medical concerns."
+            ),
+        }

@@ -1,0 +1,24 @@
+# Hea ML Pipeline - Training Dependencies
+# Core ML
+lightgbm>=4.0.0
+xgboost>=2.0.0
+scikit-learn>=1.4.0
+imbalanced-learn>=0.12.0
+
+# Data
+pandas>=2.1.0
+numpy>=1.26.0
+
+# Explainability
+shap>=0.43.0
+
+# Fairness
+fairlearn>=0.10.0
+
+# Visualization
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Utilities
+joblib>=1.3.0
+tqdm>=4.66.0
